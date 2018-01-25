@@ -1,0 +1,23 @@
+{
+  "name": "sprintvis",
+  "version": "1.0.0",
+  "description": "Visualize your sprint",
+  "main": "index.js",
+  "dependencies": {
+    "request": "^2.83.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/osimmasgard/sprintvis.git"
+  },
+  "author": "Olle Simmasgård",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/osimmasgard/sprintvis/issues"
+  },
+  "homepage": "https://github.com/osimmasgard/sprintvis#readme"
+}
