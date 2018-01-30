@@ -15,16 +15,18 @@ let listOfUsers = new Promise(function (resolve, reject) {
         xhr.send();
         xhr.onload = function (e) {
             if (xhr.readyState === 4) {
-                if (xhr.status === 200) resolve(JSON.parse(xhr.responseText)); // Returning a JSONobject
-                else {
+                if (xhr.status === 200) {
+                    resolve(JSON.parse(xhr.responseText)); // Returning a JSONobject
+                } else {
                     console.error("Statustext:", xhr.statusText);
                     reject(xhr.statusText);
                 }
             }
-        }
-    } else console.log("No XHR object")
-})
-
+        };
+    } else {
+        console.log("No XHR object")
+    }
+});
 
 let getBoard = new Promise(function (resolve, reject) {
     let xhr = new XMLHttpRequest();
@@ -33,33 +35,38 @@ let getBoard = new Promise(function (resolve, reject) {
         xhr.send();
         xhr.onload = function (e) {
             if (xhr.readyState === 4) {
-                if (xhr.status === 200) resolve(xhr.responseText);
-                else {
+                if (xhr.status === 200) {
+                    resolve(xhr.responseText);
+                } else {
                     console.error("Statustext:", xhr.statusText);
                     reject(xhr.statusText);
                 }
             }
-        }
-    } else console.log("No XHR object")
+        };
+    } else {
+        console.log("No XHR object")
+    }
+
 });
 
-let listOfSwimLaneID = getBoard.then(function (result) {
-    let jsonBoard = JSON.parse(result);
-    let temparray = [];
-    for (let prop in jsonBoard.swimlanes) {
-        temparray.push({
-            "Namn": jsonBoard.swimlanes[prop].name,
-            "ID": jsonBoard.swimlanes[prop].uniqueId
-        })
-    }
-    return Promise.resolve(temparray); //Returning an array
-}).catch(function (rj) {
-    console.log("We are here now", rj);
+let listOfSwimLaneID = new Promise(function (resolve, reject) {
+    getBoard.then(function (result) {
+        let jsonBoard = JSON.parse(result);
+        let temparray = [];
+        for (let prop in jsonBoard.swimlanes) {
+            temparray.push({
+                "Namn": jsonBoard.swimlanes[prop].name,
+                "ID": jsonBoard.swimlanes[prop].uniqueId
+            })
+        }
+        resolve(temparray); //Returning an array
+    }).catch(function (rj) {
+        console.log("We are here now", rj);
+    });
 });
 
 let listOfDone = new Promise(function (resolve, reject) {
-    listOfSwimLaneID.then(function (result) {
-        // we iterate through all swimlanes to get their tasks
+    listOfSwimLaneID.then(function (result) { // här kan vi garanterat fortsätta eftersom vi har alla swimlaneids
         let bla = result.map(function (each) {
             return new Promise(function (res, rej) {
                 let xhr = new XMLHttpRequest();
@@ -89,14 +96,25 @@ let listOfDone = new Promise(function (resolve, reject) {
             })
         })
         Promise.all(bla).then(function (responseArray) {
-            return resolve(responseArray); // Den här resolvar det yttre promise
+            resolve(responseArray); // Den här resolvar det yttre promise
         }).catch(function (err) {
             console.log("Err", err);
         })
-    })
-})
+    });
+});
 
-
+/* 
+{
+            "name": z.name,
+            "collaborators": "hej",
+            "swimlaneid": getSwimlaneName(z.swimlaneId||[]).then(function(values) {
+                return values;
+            }), function(reason) {
+                console.log("FAIL", reason);
+                // rejection
+              }
+        }
+ */
 function run() {
 
     Promise.all([listOfUsers, listOfDone, listOfSwimLaneID]).then(function (values) {
@@ -111,19 +129,14 @@ function run() {
 
         function getSwimlaneName(id) {
             return new Promise(function (res, rej) {
-                let bla = values[2].forEach(elem => {
+                values[2].forEach(elem => {
                     if (typeof (elem) != "undefined") {
                         if (elem.ID == id) {
                             //console.log("Found Swimlane", elem.Namn)
                             res(elem.Namn);
                         }
                     }
-                })
-                /*                 Promise.all(bla).then(function (res) {
-                                    return resolve(res); // Den här resolvar det yttre promise
-                                }).catch(function (err) {
-                                    console.log("Err", err);
-                                }) */
+                });
             });
         };
 
@@ -133,23 +146,16 @@ function run() {
             return new Promise(function (res, rej) {
                 // console.log("asdf", collabs)
                 if (typeof (collabs) != "undefined") {
-                    let bla = values[0].forEach(elem => {
+                    values[0].forEach(elem => {
                         collabs.find(function (element) {
                             if (elem._id === element.userId) {
                                 //console.log("Resolving with", elem.fullName);
                                 res(elem.fullName);
+                            } else {
+                                //console.log("Wrong name", elem.fullName);
                             }
                         })
                     })
-                    /*                     Promise.all(bla).then(function (res) {
-                                            return resolve(res); // Den här resolvar det yttre promise
-                                        }).catch(function (err) {
-                                            console.log("Err", err);
-                                        }) 
-                                        
-                                                    if (typeof (z.collaborators) != "undefined")  
-            
-                                        */
                 }
             });
         };
@@ -158,35 +164,48 @@ function run() {
 
 
 
-        let taskss = Promise.all(values[1].map(x => x.tasks).map(y => y.map(z => {
-                return new Promise(function (res, rej) {
+        function completeTasks() {
+            return new Promise(function (res, rej) {
+                let tasks = [];
+                values[1].map(x => x.tasks).map(y => y.map(z => {
+                    if (typeof (z.collaborators) != "undefined" && typeof (z.swimlaneId) != "undefined") {
+                        // console.log("Now at", z.collaborators, z.swimlaneId);
                         getSwimlaneName(z.swimlaneId).then(function (elem) {
                             getCollaborators(z.collaborators).then(function (array) {
-                                let x = {
+                                // console.log("pushing", array, elem)
+                                tasks.push({
                                     "name": z.name,
                                     "collaborators": array,
                                     "swimlaneid": elem
-                                }
-                                //console.log("X",x)
-                                res(x)
+                                });
                             })
                         })
-                    })})))
-                    .then(function (elem) {
-                        //console.log("asdf", elem)
-                        return resolve(elem)
-                    })
-            
-
-
-
-        taskss.then(function (arr) {
-            console.log("ARRRRR", arr[0]);
-            Promise.all(arr[0]).then(function (sdf) {
-                console.log("elem", sdf);
-                $("ol.tasks").append(" <li>" + JSON.stringify(sdf) + "</li>");
+                    }
+                }))
+                res(tasks);
             })
-        })
+        }
+
+
+        //let maps = values[1].concat(values[1].tasks);
+        console.log("Promises", completeTasks());
+        var tjola = completeTasks()
+        console.log("Tjola", tjola);
+
+        tjola.then(function (arr) {
+            console.log("ARRRRR", arr, arr.length);
+            arr.then(function (as) {
+                as.forEach(element => {
+                    console.log("elem", element);
+                    element
+                    $("ol.tasks").append(" <li>" + JSON.stringify(element) + "</li>");
+                })
+            })
+        });
     });
 };
+
+
+
+
 $(document).ready(run());
