@@ -1,0 +1,78 @@
+
+body, html {
+    margin: 0px;
+    background: green;
+
+}
+
+.outer {
+    min-height: 100%;
+    position: absolute;
+    background: green;
+    margin: 0 auto; 
+    width: 80em;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
+}
+
+
+.header {
+    background: blue;
+    position: fixed;
+    top: 0;
+    font-size: 1em;
+    width: 80em;
+    margin: 0px;
+    height: 5em;
+}
+
+.content {
+    position: absolute;
+    min-height: 100%;
+}
+
+.contentleft {
+    background: lightseagreen;
+    position: absolute;
+    top: 5em;
+    margin: 0px;
+    font-size: 1em;
+    width: 10em;
+    padding-bottom: 2em;
+    height: 100%;
+}
+
+.contentmid {
+    background: lightcoral;
+    position: absolute;
+    left: 10em;
+    top: 5em;
+    margin: 0px;
+    font-size: 1em;
+    width: 60em;
+    padding-bottom: 2em;
+    height: 100%;
+}
+
+.contentright {
+    background: lightcoral;
+    position: absolute;
+    left: 70em;
+    top: 5em;
+    margin: 0px;
+    font-size: 1em;
+    width: 10em;
+    padding-bottom: 2em;
+    height: 100%;
+}
+
+.footer {
+    background: lightslategray;
+    position: fixed;
+    font-size: 1em;
+    height: 2em;
+    bottom: 0;
+    width: 80em;
+}
