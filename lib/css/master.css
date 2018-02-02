@@ -1,78 +1,89 @@
-
-body, html {
+body,
+html {
     margin: 0px;
-    background: green;
+    /* background:#2E2F2B; */
+    background: black;
+    font-family: monospace;
+    font-size: 14px;
+    font-variant: normal;
+    color: #BEBEBE;
+    font-weight: 600;
+}
 
+.clickedName {
+    font-weight: bold;
+    color: red;
+}
+
+.tasks {
+    font-size: 12px;
+}
+.swimlane {
+    color: red;
 }
 
 .outer {
     min-height: 100%;
     position: absolute;
-    background: green;
-    margin: 0 auto; 
-    width: 80em;
+    border: 2px solid #BEBEBE;
+    border-radius: 5px;
+    background: 6312A2;
+    overflow: hidden;
+    width: 100em;
     top: 50%;
     left: 50%;
     /* bring your own prefixes */
     transform: translate(-50%, -50%);
 }
 
-
 .header {
-    background: blue;
+    background: #6312A2;
     position: fixed;
     top: 0;
     font-size: 1em;
-    width: 80em;
+    width: 98em;
+    padding-top: 1em;
+    padding-left: 1em;
     margin: 0px;
-    height: 5em;
+    height: 4em;
 }
 
 .content {
     position: absolute;
-    min-height: 100%;
+    background: 6312A2;
+    height: 100%;
+    background: #454642;
+    margin: 0px;
+    font-size: 1em;
+    padding-top: 1em;
+    padding-bottom: 2em;
 }
 
 .contentleft {
-    background: lightseagreen;
+    background: #282925;
     position: absolute;
+    overflow: hidden;
     top: 5em;
-    margin: 0px;
-    font-size: 1em;
-    width: 10em;
-    padding-bottom: 2em;
-    height: 100%;
+    width: 20em;
+    padding-left: 1em;
 }
 
 .contentmid {
-    background: lightcoral;
+    background: #454642;
     position: absolute;
-    left: 10em;
+    overflow: auto;
+    padding-left: 1em;
+    left: 20em;
     top: 5em;
-    margin: 0px;
-    font-size: 1em;
-    width: 60em;
-    padding-bottom: 2em;
-    height: 100%;
-}
-
-.contentright {
-    background: lightcoral;
-    position: absolute;
-    left: 70em;
-    top: 5em;
-    margin: 0px;
-    font-size: 1em;
-    width: 10em;
-    padding-bottom: 2em;
-    height: 100%;
+    width: 84em;
 }
 
 .footer {
-    background: lightslategray;
+    bottom: 0px;
+    background: #6312A2;
     position: fixed;
     font-size: 1em;
     height: 2em;
     bottom: 0;
-    width: 80em;
+    width: 100em;
 }
