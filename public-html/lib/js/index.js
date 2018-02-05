@@ -1,7 +1,6 @@
 // Medans proxyn används så är baseurlen bakom proxyn: https://kanbanflow.com/api/v1
 let baseUrl = "http://docbrown.ad.tt.se:40400/";
 let getListUrl = "tasks?columnId=56c14004bc8011e6a91f2f180b26adb4&limit=100&";
-let getPagaendeUrl = "tasks?columnId=56c14002bc8011e6a91f2f180b26adb4&"
 let getUserUrl = "users";
 let getBoardUrl = "board";
 
@@ -21,7 +20,6 @@ let listOfUsers = new Promise(function (resolve, reject) {
         }
     } else console.log("No XHR object")
 })
-
 
 let getBoard = new Promise(function (resolve, reject) {
     let xhr = new XMLHttpRequest();
@@ -57,7 +55,7 @@ let listOfSwimLaneID = getBoard.then(function (result) {
 let listOfDone = new Promise(function (resolve, reject) {
     listOfSwimLaneID.then(function (result) {
         // we iterate through all swimlanes to get their tasks
-        let bla = result.map(function (each) {
+        let returnArray = result.map(function (each) {
             return new Promise(function (res, rej) {
                 let xhr = new XMLHttpRequest();
                 if (xhr) {
@@ -85,7 +83,7 @@ let listOfDone = new Promise(function (resolve, reject) {
                 }
             })
         })
-        Promise.all(bla).then(function (responseArray) {
+        Promise.all(returnArray).then(function (responseArray) {
             return resolve(responseArray); // Den här resolvar det yttre promise
         }).catch(function (err) {
             console.log("Err", err);
@@ -98,9 +96,6 @@ function run() {
 
     Promise.all([listOfUsers, listOfDone, listOfSwimLaneID]).then(function (values) {
 
-
-
-
         function getSwimlaneName(id) {
             return new Promise(function (res, rej) {
                 let bla = values[2].forEach(elem => {
@@ -112,8 +107,6 @@ function run() {
                 })
             });
         };
-
-
 
         function getCollaborators(collabs) {
             return new Promise(function (res, rej) {
@@ -132,9 +125,9 @@ function run() {
         };
 
         let flattenedTasks = values[1].map(obj => obj.tasks)
-        var merged = [].concat.apply([], flattenedTasks);
+        var mergedTasks = [].concat.apply([], flattenedTasks);
 
-        let tasks = merged.map(task => {
+        let tasks = mergedTasks.map(task => {
             const swimlanePromise = getSwimlaneName(task.swimlaneId).catch(reason => console.log(reason))
             const collabPromise = getCollaborators(task.collaborators).catch(reason => console.log(reason))
             return Promise.all([swimlanePromise, collabPromise]).then(function (result) {
@@ -154,24 +147,18 @@ function run() {
             $('.footer').css("background", "white");
         };
 
-        // ########### GUI stuff
-        //footer();
-
-        // ########### D3 manipulation
-        //d3.selectAll("ol").style("color", "green");
-
-        // ########### D3 manipulation
-
-
-
-
+        // Printing all users in an ordered list
         values[0].forEach(element => {
             if (element.fullName === "Kanban IT" || element.fullName === "TT") return;
             else
                 $("ol.users").append(" <li id=" + element._id + ">" + JSON.stringify(element.fullName).substr(1).slice(0, -1) + "</li>");
         });
 
-        //Listan av Users. 
+        $("ol.users li").hover(function () {
+            $(this).css('cursor', 'pointer');
+        });
+
+        //Adding an action for when a user in the list is clicked.
         $("ol.users li").click(function () {
             if (typeof (tasks) != "undefined") {
                 $("ol.users li").removeClass("clickedName");
@@ -184,7 +171,7 @@ function run() {
                             if ($(this).attr("id") === x.userId) {
                                 //$(this).append($("<span>" + task.name + "<br>"+"</span>"));
                                 //$("section.contentmid").text($("<span>" + task.name + "<br>" + "</span>"))
-                                $("ol.tasks").append("<li>" + task.name + "<span class=\"swimlane\">  "+ task.swimlaneName + "</span></li>")
+                                $("ol.tasks").append("<li>" + task.name + "<span class=\"swimlane\">  " + task.swimlaneName + "</span></li>")
                                 //$("ol.tasks").append("<li>" + task.name +"</li>")
                             }
                         })
@@ -200,9 +187,7 @@ function run() {
                 }).catch(reason => console.log(reason))
             })
         }
-
-
-        //  END OF RUN() _____________
+        
     })
 }
 $(document).ready(run());
