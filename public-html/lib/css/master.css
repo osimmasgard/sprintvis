@@ -42,8 +42,7 @@ html {
     top: 0;
     font-size: 1em;
     width: 98em;
-    padding-top: 1em;
-    padding-left: 1em;
+ 
     margin: 0px;
     height: 4em;
 }
@@ -82,6 +81,7 @@ html {
     bottom: 0px;
     background: #6312A2;
     position: fixed;
+    padding-left: 1em;
     font-size: 1em;
     height: 2em;
     bottom: 0;
