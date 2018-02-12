@@ -1,90 +1,144 @@
 body,
 html {
-    margin: 0px;
-    /* background:#2E2F2B; */
-    background: black;
-    font-family: monospace;
-    font-size: 14px;
-    font-variant: normal;
-    color: #BEBEBE;
-    font-weight: 600;
+  margin: 0px;
+  background: black;
+  font-family: monospace;
+  font-variant: normal;
+  color: #BEBEBE;
+  font-weight: 600;
 }
 
 .clickedName {
-    font-weight: bold;
-    color: red;
+  font-weight: bold;
+  color: red;
 }
 
 .tasks {
-    font-size: 12px;
-}
-.swimlane {
-    color: red;
+  font-size: 0.8em;
 }
 
-.outer {
-    margin-top:2px;
-    margin-bottom:2px;
+.swimlane {
+  color: red;
+}
+
+@media all and (min-width: 883px) {
+  .outer {
+    font-size: 1.1em;
+    margin-top: 2px;
+    margin-bottom: 2px;
     min-height: 98%;
-    padding-bottom: 2px;
+    padding-bottom: 1px;
     position: absolute;
     border: 2px solid #BEBEBE;
     border-radius: 5px;
-    background: 6312A2;
+    background: #454642;
     overflow: hidden;
-    width: 80em;
+    width: 60em;
     top: 50%;
     left: 50%;
-    /* bring your own prefixes */
     transform: translate(-50%, -50%);
-}
-
-.header {
+  }
+  .header {
     background: #6312A2;
     position: fixed;
     top: 0;
     font-size: 1em;
-    width: 98em;
+    padding-top: 1em;
+    padding-left: 1em;
+    width: 100%;
     margin: 0px;
     height: 4em;
-}
-
-.content {
+  }
+  .content {
     position: absolute;
-    background: 6312A2;
-    height: 100%;
-    background: #454642;
-    margin: 0px;
-    font-size: 1em;
-    padding-top: 1em;
-    padding-bottom: 2em;
-}
-
-.contentleft {
+    height: 90%;
+  }
+  .contentleft {
     background: #282925;
-    position: absolute;
     overflow: hidden;
     top: 5em;
-    width: 20em;
-    padding-left: 1em;
-}
-
-.contentmid {
+    width: 25%;
+    padding-left: 0.5em;
+  }
+  .contentmid {
     background: #454642;
-    position: absolute;
     overflow: auto;
     padding-left: 1em;
-    left: 20em;
+    bottom: 5em;
+    left: 25%;
     top: 5em;
-    width: 84em;
-}
-
-.footer {
+  }
+  .footer {
     bottom: 0px;
     background: #6312A2;
     position: fixed;
     padding-left: 1em;
-    font-size: 1em;
+    font-size: 0.75em;
     height: 2em;
     width: 100%;
+  }
+}
+
+@media all and (max-width: 883px) {
+  .outer {
+    font-size: 0.5em;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    min-height: 98%;
+    padding-bottom: 1px;
+    position: absolute;
+    border: 2px solid #BEBEBE;
+    border-radius: 5px;
+    background: #454642;
+    overflow: hidden;
+    width: 40em;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .header {
+    background: #6312A2;
+    position: fixed;
+    top: 0;
+    font-size: 1em;
+    padding-top: 1em;
+    padding-left: 1em;
+    width: 100%;
+    margin: 0px;
+    height: 4em;
+  }
+
+  ol {
+    display: inline;
+    padding-left: 1em;
+  }
+
+  .content {
+    position: absolute;
+    height: 95%;
+  }
+  .contentleft {
+    background: #282925;
+    overflow: hidden;
+    top: 5em;
+    width: 30%;
+    padding-left: 0.2em;
+  }
+  .contentmid {
+    background: #454642;
+    overflow: auto;
+    padding-left: 1em;
+    bottom: 5em;
+    left: 30%;
+    top: 5em;
+  }
+  .footer {
+    bottom: 0px;
+    background: #6312A2;
+    position: fixed;
+    padding-left: 1em;
+    font-size: 0.75em;
+    height: 2em;
+    width: 100%;
+  }
 }
