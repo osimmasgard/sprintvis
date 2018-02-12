@@ -23,13 +23,16 @@ html {
 }
 
 .outer {
-    min-height: 100%;
+    margin-top:2px;
+    margin-bottom:2px;
+    min-height: 98%;
+    padding-bottom: 2px;
     position: absolute;
     border: 2px solid #BEBEBE;
     border-radius: 5px;
     background: 6312A2;
     overflow: hidden;
-    width: 100em;
+    width: 80em;
     top: 50%;
     left: 50%;
     /* bring your own prefixes */
@@ -42,7 +45,6 @@ html {
     top: 0;
     font-size: 1em;
     width: 98em;
- 
     margin: 0px;
     height: 4em;
 }
@@ -84,6 +86,5 @@ html {
     padding-left: 1em;
     font-size: 1em;
     height: 2em;
-    bottom: 0;
-    width: 100em;
+    width: 100%;
 }
